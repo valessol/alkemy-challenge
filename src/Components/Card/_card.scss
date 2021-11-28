@@ -1,0 +1,26 @@
+.cardBadge {
+    text-transform: capitalize;
+    &--good {
+
+        background-color: $primary-color !important;
+    }
+    &--neutral {
+        background-color: $secondary-color !important;
+
+    }
+    &--bad {
+        background-color: $secondary-color !important;
+
+    }
+    &--filter {
+        cursor: pointer;
+
+    }
+
+}
+
+.cardTitle {
+    color: $primary-color;
+    font-size: 2rem;
+}
+
