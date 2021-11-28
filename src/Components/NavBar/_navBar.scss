@@ -1,4 +1,12 @@
 .navBar {
     background-color: $primary-color;
     color: #fff;
+    &--links {
+        &:hover {
+            color: gray !important;
+        }
+    }
+    &--active {
+        text-decoration: underline;
+    }
 }

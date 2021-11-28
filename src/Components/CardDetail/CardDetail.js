@@ -3,6 +3,7 @@ import { Button, Col, Container, Row, Spinner } from 'react-bootstrap'
 import { useHistory, useParams } from 'react-router'
 import { TeamContext } from '../../Context/TeamContext'
 import { getHero } from '../../data/getData'
+import { AuthContext } from "../../Context/AuthContext";
 import PowerstatsProgressBar from '../PowerstatsProgressBar/PowerstatsProgressBar'
 import { images } from '../../assets/images'
 
@@ -11,6 +12,7 @@ const CardDetail = () => {
     const [ loader, setLoader ] = useState(false)
     const [ hero, setHero ] = useState(null)
     const { isOnTeam, addToTeam, removeFromTeam } = useContext(TeamContext);
+    const { currentUser } = useContext(AuthContext);
     const { push } = useHistory()
     const { itemId } = useParams()
 
@@ -25,17 +27,17 @@ const CardDetail = () => {
             id: itemId,
             name: hero.name !== 'null' ? hero.name : 'Desconocido', 
             powerstats: {
-                intelligence: (hero.powerstats.intelligence !== 'null' ? hero.powerstats.intelligence : 0 ),
-                strength: (hero.powerstats.strength !== 'null' ? hero.powerstats.strength : 0 ),
-                speed: (hero.powerstats.speed !== 'null' ? hero.powerstats.speed : 0 ),
-                durability: (hero.powerstats.durability !== 'null' ? hero.powerstats.durability : 0 ),
-                power: (hero.powerstats.power !== 'null' ? hero.powerstats.power : 0 ),
-                combat: (hero.powerstats.combat !== 'null' ? hero.powerstats.combat : 0 )
+                intelligence: (hero.powerstats.intelligence !== 'null' ? Number(hero.powerstats.intelligence) : 0 ),
+                strength: (hero.powerstats.strength !== 'null' ? Number(hero.powerstats.strength) : 0 ),
+                speed: (hero.powerstats.speed !== 'null' ? Number(hero.powerstats.speed) : 0 ),
+                durability: (hero.powerstats.durability !== 'null' ? Number(hero.powerstats.durability) : 0 ),
+                power: (hero.powerstats.power !== 'null' ? Number(hero.powerstats.power) : 0 ),
+                combat: (hero.powerstats.combat !== 'null' ? Number(hero.powerstats.combat) : 0 )
             },
             image: hero.image, 
             height: hero.appearance.height,
             weight: hero.appearance.weight,
-            alignment: hero.biography.alignment
+            alignment: hero.biography.alignment === '-' ? 'neutral' : hero.biography.alignment
         }
         addToTeam(item)
     }
@@ -43,17 +45,23 @@ const CardDetail = () => {
    
 
     useEffect(()=> {
-        setLoader(false)
-        getHero(itemId)
-            .then((res)=> {
-                setHero(res)
-            })
-            .catch(err=>{
-                console.log(err)
-                push('/*')
-            })
-            .finally(()=>setLoader(false))
-    },[itemId])
+        if (!currentUser) {
+            push('/login')
+        } else {
+              
+            setLoader(false)
+            getHero(itemId)
+                .then((res)=> {
+                    setHero(res)
+                })
+                .catch(err=>{
+                    console.log(err)
+                    push('/*')
+                })
+                .finally(()=>setLoader(false))
+        }
+    },[itemId, currentUser])
+    
   
     return (
         <Container fluid className="detail" style={{padding: 0}}>

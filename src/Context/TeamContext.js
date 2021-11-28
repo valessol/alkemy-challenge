@@ -11,7 +11,7 @@ export const TeamProvider = ({children}) => {
     const [ neutral, setNeutral ] = useState(false);
     const [ bad, setBad ] = useState(false);
 
-    //Verificar orientación
+    //Verificar orientación-----------------------------
     const completeGoodAlignment = () => {
        const goodMembers = team.filter((members)=>members.alignment === 'good')
        const isComplete = goodMembers.length = 2
@@ -29,7 +29,7 @@ export const TeamProvider = ({children}) => {
     }
 
 
-    //Modificar miembros del equipo
+    //Modificar miembros del equipo------------------------------
     const addToTeam = (item) => {
         if (team.length < 6) {
 
@@ -39,6 +39,9 @@ export const TeamProvider = ({children}) => {
                 //|| ((item.alignment === 'bad') && !completeBadAlignment())) {
 
                 setTeam([...team, item]);
+                if (team.length === 5) {
+                    setComplete(true)
+                }
 
             //}
 
@@ -71,17 +74,61 @@ export const TeamProvider = ({children}) => {
         setTeam([])
     }
 
-    //Acumulativo de powerstats
+    //Acumulativo de powerstats-----------------------------------
     const totalPowerstats = (attribute) => {
 
-        return team.reduce((acc, powerstat)=>acc + powerstat[attribute], 0);
+        return team.reduce((acc, item)=>acc + item.powerstats[attribute], 0);
     }
 
-    //Promedios
-    const promAttr = (attr) => {
-        const totalAttr = team.reduce((acc, item)=>acc + item.appearance[attr], 0);
-        return (totalAttr/team.length)
+    //Promedios-----------------------------
+    const promAttr = (arr) => {
+        const totalAttr = arr.reduce((acc, item)=>acc + item, 0);
+        return (totalAttr/arr.length)
     }
+
+
+    //Extraer valor de peso y altura
+    const teamWeight = () => {
+        const weightInLb = team.map(item=>item.weight[0])
+        const weightInKg = team.map(item=>item.weight[1])
+        
+        const newWeightInLb = weightInLb.map((item)=>{
+            if (item.includes('-')) {
+                item = '0 lb';
+            }
+            return Number(item.slice(0, -3))
+        })
+        const newWeightInKg = weightInKg.map((item)=>{
+            if (item.includes('-')) {
+                item = '0 lb';
+            }
+            return Number(item.slice(0, -3))
+        })
+        
+        const promWeightInLb = promAttr(newWeightInLb).toFixed(2)
+        const promWeightInKg = promAttr(newWeightInKg).toFixed(2)
+
+        return `Peso promedio: ${promWeightInLb} lb / ${promWeightInKg} Kg`
+    }
+
+    const teamHeight = () => {
+        const heightInCm = team.map(item=>item.height[1])
+        
+        const newHeightInCm = heightInCm.map((item)=>{
+            if (item.includes('-')) {
+                item = '0 cm';
+            }
+            return Number(item.slice(0, -3))
+        })
+        
+        const promHeightInCm = promAttr(newHeightInCm).toFixed(2)
+
+
+        return `Altura promedio: ${promHeightInCm} cm`
+    }
+
+
+    
 
     useEffect(()=>{
         localStorage.setItem('team', JSON.stringify(team));
@@ -98,7 +145,8 @@ export const TeamProvider = ({children}) => {
             removeAll,
             isOnTeam, 
             totalPowerstats, 
-            promAttr
+            teamWeight,
+            teamHeight
         }}>
             {children}
         </TeamContext.Provider>

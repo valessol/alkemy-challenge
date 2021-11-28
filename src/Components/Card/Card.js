@@ -17,17 +17,17 @@ const Card = ({ id, name, powerstats, image, biography, appearance }) => {
         id: id,
             name: name !== 'null' ? name : 'Desconocido', 
             powerstats: {
-                intelligence: (powerstats.intelligence !== 'null' ? powerstats.intelligence : 0 ),
-                strength: (powerstats.strength !== 'null' ? powerstats.strength : 0 ),
-                speed: (powerstats.speed !== 'null' ? powerstats.speed : 0 ),
-                durability: (powerstats.durability !== 'null' ? powerstats.durability : 0 ),
-                power: (powerstats.power !== 'null' ? powerstats.power : 0 ),
-                combat: (powerstats.combat !== 'null' ? powerstats.combat : 0 )
+                intelligence: (powerstats.intelligence !== 'null' ? Number(powerstats.intelligence) : 0 ),
+                strength: (powerstats.strength !== 'null' ? Number(powerstats.strength) : 0 ),
+                speed: (powerstats.speed !== 'null' ? Number(powerstats.speed) : 0 ),
+                durability: (powerstats.durability !== 'null' ? Number(powerstats.durability) : 0 ),
+                power: (powerstats.power !== 'null' ? Number(powerstats.power) : 0 ),
+                combat: (powerstats.combat !== 'null' ? Number(powerstats.combat) : 0 )
             },
             image: image, 
             height: appearance.height,
             weight: appearance.weight,
-            alignment: biography.alignment
+            alignment: biography.alignment === '-' ? 'neutral' : biography.alignment
     }
 
     const colorBadge = () => {

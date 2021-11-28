@@ -1,15 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Badge,
-  Button,
-  Col,
-  Container,
-  Form,
-  ProgressBar,
-  Row,
-  Spinner,
-} from "react-bootstrap";
+import { Badge, Button, Col, Container, Form, ProgressBar, Row, Spinner } from "react-bootstrap";
 import { useHistory } from "react-router";
+import { AuthContext } from "../../Context/AuthContext";
 import { TeamContext } from "../../Context/TeamContext";
 
 const TeamView = () => {
@@ -19,29 +11,25 @@ const TeamView = () => {
     removeFromTeam,
     totalPowerstats,
     team,
-    promAttr,
+    teamWeight,
+    teamHeight,
     complete,
     removeAll,
   } = useContext(TeamContext);
+  const { currentUser } = useContext(AuthContext)
   const { push } = useHistory();
-  console.log(team);
-  //NOTE: validar que el team no esté vacío
+ 
   //Calculo de atributos
-  const totalIntelligence = totalPowerstats("intelligence");
-  const totalStrenght = totalPowerstats("strenght");
-  const totalSpeed = totalPowerstats("speed");
-  const totalDurability = totalPowerstats("durability");
-  const totalPower = totalPowerstats("power");
-  const totalCombat = totalPowerstats("combat");
+  const totalPowerstatsOfTeam = [
+      totalPowerstats("intelligence"), 
+      totalPowerstats("strength"),
+      totalPowerstats("speed"),
+      totalPowerstats("durability"),
+      totalPowerstats("power"),
+      totalPowerstats("combat"),
+  ]
+  const orderedPowerstats = (totalPowerstatsOfTeam.sort(function (a, b) {return b - a}))
 
-  console.log(
-    totalIntelligence,
-    totalStrenght,
-    totalSpeed,
-    totalDurability,
-    totalPower,
-    totalCombat
-  );
   const handleChange = (e) => {
     e.preventDefault();
     return setRemoveId(e.target.value);
@@ -69,23 +57,14 @@ const TeamView = () => {
     return colorName;
   };
 
-  // const totalPowrstatsValues = [
-  //     {intelligence: totalIntelligence},
-  //     {strenght: totalStrenght},
-  //     {speed: totalSpeed},
-  //     {durability: totalDurability},
-  //     {power: totalPower},
-  //     {combat: totalCombat}
-  // ]
 
-  // const orderedPowerstats = totalPowrstatsValues.sort( function (a, b) {
-  //     return (a.)
-  // })
   useEffect(() => {
-    if (team.length === 0) {
+    if (!currentUser) {
+      push('/login')
+    } else if (team.length === 0) {
       push("/heros");
     }
-  }, [team]);
+  }, [team, currentUser]);
 
   return (
     <Container fluid className="detail mt-0" style={{ padding: 0 }}>
@@ -106,72 +85,44 @@ const TeamView = () => {
           </div>
 
           <Container>
-            {complete ? (
-              <h2 className="text-center detailTitle title3">
-                ¡Tu equipo está completo!
-              </h2>
-            ) : (
-              <>
-                <h2 className="text-center detailTitle title3">
-                  ¡Aún puedes agregar más integrantes a tu equipo!
-                </h2>
-                <p style={{ fontSize: "2rem" }} className="text-center">
-                  Recuerda que puedes agregar hasta 2 integrantes buenos, hasta
-                  2 neutrales y hasta 2 malos
-                </p>
-              </>
-            )}
+            {
+                complete 
+                    ? (
+                        <h2 className="text-center detailTitle title3">
+                          ¡Tu equipo está completo!
+                        </h2>
+                    ) : (
+                        <>
+                          <h2 className="text-center detailTitle title3">
+                            ¡Aún puedes agregar más integrantes a tu equipo!
+                          </h2>
+                          <p style={{ fontSize: "2rem" }} className="text-center">
+                            Recuerda que puedes agregar hasta 2 integrantes buenos, hasta
+                            2 neutrales y hasta 2 malos
+                          </p>
+                        </>
+                    )
+            }
 
             <Row>
               <Col md={12} className="my-4">
-                <div className="d-flex justify-content-center">
-                  <Badge bg="success" className="cardBadge m-2">
-                    Inteligencia
-                  </Badge>
-                  <Badge bg="warning" className="cardBadge m-2">
-                    Fuerza
-                  </Badge>
-                  <Badge bg="danger" className="cardBadge m-2">
-                    Velocidad
-                  </Badge>
-                  <Badge className="cardBadge m-2">Durabilidad</Badge>
-                  <Badge bg="info" className="cardBadge m-2">
-                    Poder
-                  </Badge>
-                  <Badge bg="secondary" className="cardBadge m-2">
-                    Combate
-                  </Badge>
-                </div>
-                <ProgressBar>
-                  <ProgressBar
-                    striped
-                    variant="success"
-                    now={totalIntelligence}
-                    key={1}
-                  />
-                  <ProgressBar variant="warning" now={totalStrenght} key={2} />
-                  <ProgressBar
-                    striped
-                    variant="danger"
-                    now={totalSpeed}
-                    key={3}
-                  />
-                  <ProgressBar striped now={totalDurability} key={4} />
-                  <ProgressBar
-                    striped
-                    variant="info"
-                    now={totalPower}
-                    key={5}
-                  />
-                  <ProgressBar
-                    striped
-                    variant="secondary"
-                    now={totalCombat}
-                    key={6}
-                  />
+                <ProgressBar style={{height: '2rem'}}>
+                  {
+                    orderedPowerstats.map((item, index) =>{
+                      return (
+                        <ProgressBar
+                            style={{backgroundColor: `hsl(${index*50}, 81%, 56%)`, fontSize: '1.4rem', height: '2rem'}}
+                            now={item}
+                            label={`${item}%`}
+                            key={index}
+                        />
+                      )
+                    })
+                  }
                 </ProgressBar>
               </Col>
             </Row>
+
             <Row className="d-flex flex justify-content-center">
               <Col md={5} className="detailData--column m-4">
                 <div>
@@ -199,8 +150,15 @@ const TeamView = () => {
                 <div>
                   <h3>Atributos de equipo: </h3>
                   <ul>
-                    {/* <li >Peso promedio: {promAttr('weight')}</li>                                               
-                                                <li >Altura promedio: {promAttr('height')}</li>                                                */}
+                    <li >{teamWeight()}</li>                                               
+                    <li >{teamHeight()}</li>                                               
+                    <li >Inteligencia: {totalPowerstats("intelligence")}%</li>                                               
+                    <li >Fuerza: {totalPowerstats("strength")}%</li>                                               
+                    <li >Velocidad: {totalPowerstats("speed")}%</li>                                               
+                    <li >Durabilidad: {totalPowerstats("durability")}%</li>                                               
+                    <li >Poder: {totalPowerstats("power")}%</li>                                               
+                    <li >Combate: {totalPowerstats("combat")}%</li>                                               
+                                                                  
                   </ul>
                 </div>
               </Col>

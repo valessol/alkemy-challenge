@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import { Badge, Spinner } from 'react-bootstrap'
-
+import { useHistory } from "react-router";
+import { AuthContext } from "../../Context/AuthContext";
 import { TeamContext } from '../../Context/TeamContext'
 import { getSearchResults } from '../../data/getData'
 import Search from '../Search/Search'
@@ -10,10 +11,12 @@ import CardList from './CardList'
 const CardListContainer = () => {
     
     const { team } = useContext(TeamContext)
+    const { currentUser } = useContext(AuthContext)
     const [heros, setHeros] = useState (null);
     const [filterHeros, setFilterHeros] = useState (null);
     const [loader, setLoader] = useState (false);
     const [ err, setErr] = useState(false)
+    const { push } = useHistory();
 
 
     const searchHeros = (search) => {
@@ -47,10 +50,14 @@ const CardListContainer = () => {
     }
 
     useEffect(() => {
-        searchHeros('marvel')
-    }, [])
+        if (!currentUser) {
+            push('/login')
+        } else {
+            searchHeros('m')
+        }
+        
+    }, [currentUser])
 
-//probar que pasa cuando hago una busqueda, se borra la barra? Se actualizan las cards?
     return (
         <div>
             {
@@ -63,7 +70,9 @@ const CardListContainer = () => {
             }
             {
                 (heros && heros.length===0)
-                    ? <Spinner/>
+                    ?   <Spinner animation="border" role="status">
+                            <span className="visually-hidden">Cargando...</span>
+                        </Spinner>
                     : <>
                         {
                             team.length !== 0 && <h2 className="text-center mt-4">¡Busca tu superhéroe favorito!</h2>
