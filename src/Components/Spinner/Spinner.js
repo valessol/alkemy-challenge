@@ -1,32 +1,23 @@
 import React from 'react'
 import Lottie from 'react-lottie'
-import { Link } from 'react-router-dom'
 import spinner from './spinner.json'
-import { Button } from 'react-bootstrap'
 
 const Spinner = () => {
 
     const defaultOptions = {
         loop: true,
         autoplay: true,
-        animationData: hero
+        animationData: spinner
     }
 
     return (
-        <div className="container">
-            <div className="error">
+        <div className="container" style={{height: '80vh'}}>
+            <div style={{width: '10rem', margin: '10rem auto'}} className="d-flex justify-content-center align-items-center">
 
-                <h2 className='text-center my-4'>Lo sentimos... ha ocurrido un error inesperado</h2>
-
-                <Link to="/" >
-                    <Button 
-                        className='button my-4'
-                    >
-                            Volver al inicio
-                    </Button>
-                </Link>
+            <span className="visually-hidden">Cargando...</span>
                 
-                <Lottie options={defaultOptions} />
+            <Lottie options={defaultOptions} />
+
             </div>
         </div>
     )

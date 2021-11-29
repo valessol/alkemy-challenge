@@ -1,11 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Badge, Spinner } from 'react-bootstrap'
+import { Badge } from 'react-bootstrap'
 import { useHistory } from "react-router";
 import { AuthContext } from "../../Context/AuthContext";
 import { TeamContext } from '../../Context/TeamContext'
 import { getSearchResults } from '../../data/getData'
 import Search from '../Search/Search'
 import CardList from './CardList'
+import Spinner from '../Spinner/Spinner'
 
 //NOTE: Limpiar filtros no anda
 const CardListContainer = () => {
@@ -66,10 +67,8 @@ const CardListContainer = () => {
                         </>
             }
             {
-                (heros && heros.length===0)
-                    ?   <Spinner animation="border" role="status">
-                            <span className="visually-hidden">Cargando...</span>
-                        </Spinner>
+                loader && (heros && heros.length===0)
+                    ?   <Spinner />
                     : <>
                         {
                             team.length !== 0 && <h2 className="text-center mt-4">¡Busca tu superhéroe favorito!</h2>

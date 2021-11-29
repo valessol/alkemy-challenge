@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Button, Col, Container, Row, Spinner } from 'react-bootstrap'
+import { Button, Col, Container, Row } from 'react-bootstrap'
 import { useHistory, useParams } from 'react-router'
 import { TeamContext } from '../../Context/TeamContext'
 import { getHero } from '../../data/getData'
 import { AuthContext } from "../../Context/AuthContext";
 import PowerstatsProgressBar from '../PowerstatsProgressBar/PowerstatsProgressBar'
 import { images } from '../../assets/images'
-
+import Spinner from '../Spinner/Spinner'
 
 const CardDetail = () => {
     const [ loader, setLoader ] = useState(false)
@@ -67,9 +67,7 @@ const CardDetail = () => {
         <Container fluid className="detail" style={{padding: 0}}>
 
             {   loader 
-                    ?   <Spinner animation="border" role="status">
-                            <span className="visually-hidden">Cargando...</span>
-                        </Spinner>
+                    ? <Spinner />
                     : hero &&
                         <>
                             <div>

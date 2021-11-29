@@ -19,3 +19,5 @@ Objetivo: Desarrollar una aplicación para crear un equipo de superhéroes que c
 - Peticiones con axios
 - Sass
 - Animaciones con Lottie
+
+Web Designer: Valeria Silveira
