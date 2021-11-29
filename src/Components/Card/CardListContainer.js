@@ -45,9 +45,6 @@ const CardListContainer = () => {
         const filterResult = newFilter.filter((hero)=>hero.biography.alignment === alignmentState)
         setFilterHeros(filterResult)
     }
-    const cleanFilter = () => {
-        setFilterHeros(null)
-    }
 
     useEffect(() => {
         if (!currentUser) {
@@ -104,13 +101,6 @@ const CardListContainer = () => {
                                 Bad
                             </Badge>
 
-                            <Badge 
-                                bg="secondary" 
-                                className='cardBadge m-2 cardBadge--filter'
-                                onClick={searchHeros}
-                            >
-                                Limpiar filtros
-                            </Badge>
                         </div>
 
                         {

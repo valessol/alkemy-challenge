@@ -9,7 +9,7 @@ const CardList = ({heros}) => {
             <Row className="justify-content-center">
                 { heros &&
                     heros.map((item, index) => (
-                        <Col md={4} key={index}>
+                        <Col xs={8} sm={6} md={4} key={index}>
                             <Card {...item} />
                         </Col>
                     ))

@@ -8,6 +8,19 @@ $titles-font: 'Permanent Marker', cursive;
 $primary-color: #801010;
 $secondary-color: #383838;
 
+//Mixins
+
+@mixin mobile {
+    @media (min-width: 480px) {
+        @content;
+    }
+}
+@mixin tablet {
+    @media (min-width: 768px) {
+        @content;
+    }
+}
+
 /************* Normalizacion**********/
 
 html {
@@ -56,7 +69,10 @@ a {
     margin: 2rem auto;
     border: none;
     padding: 0.5rem 2rem;
-    min-width: 20rem;
+    min-width: 18rem;
+    @media (min-width: 375px) {
+        min-width: 20rem;
+    }
     &:hover {
         background-color: $secondary-color;
     }

@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react'
-import { Card as BsCard, Button, Badge, ToastBody } from 'react-bootstrap'
+import { Card as BsCard, Button, Badge } from 'react-bootstrap'
 import { Link } from 'react-router-dom';
 import { TeamContext } from '../../Context/TeamContext';
-import OpenAnimation from '../Animation/OpenAnimation';
+import Toggler from '../Toggler/Toggler';
 import PowerstatsProgressBar from '../PowerstatsProgressBar/PowerstatsProgressBar';
 import { Toast } from '../Toast/Toast';
 
@@ -59,7 +59,7 @@ const Card = ({ id, name, powerstats, image, biography, appearance }) => {
 
     return (
         <>
-            <BsCard className='cardContainer my-2'>
+            <BsCard className='my-2'>
                 <BsCard.Img variant="top" src={image?.url} className='cardImage'/>
 
                 <Badge bg={colorBadge()} className='cardBadge'>{alignment}</Badge>
@@ -68,9 +68,9 @@ const Card = ({ id, name, powerstats, image, biography, appearance }) => {
 
                     <BsCard.Title className="title3 cardTitle text-center">{name}</BsCard.Title>
 
-                    <OpenAnimation>
+                    <Toggler labeltrue="Esconder atributos" labelfalse="Ver atributos">
                         <PowerstatsProgressBar { ...powerstats} />
-                    </OpenAnimation>
+                    </Toggler>
 
                     <Link exact to={`/heros/${id}`}>
                         <Button className="button" >Ver Detalle</Button>{' '}

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import {ProgressBar} from 'react-bootstrap';
 
 const PowerstatsProgressBar = ({ intelligence, strength, speed, durability, power, combat }) => {

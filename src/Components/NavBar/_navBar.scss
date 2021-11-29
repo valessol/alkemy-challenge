@@ -1,6 +1,19 @@
 .navBar {
     background-color: $primary-color;
     color: #fff;
+    &__container {
+        flex-direction: column;
+        justify-content: center;
+        @media (min-width: 900px) {
+           flex-direction: row;
+        }
+    }
+    &__title {
+        font-size: 3rem;
+        @include mobile {
+            font-size: 5rem;
+        }
+    }
     &--links {
         &:hover {
             color: gray !important;
@@ -9,4 +22,12 @@
     &--active {
         text-decoration: underline;
     }
+    &__btn {
+        min-width: 10rem;
+        margin: 0 !important;
+        @media (min-width: 350px) {
+            margin: auto;
+        }
+    }
 }
+

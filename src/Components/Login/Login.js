@@ -40,6 +40,7 @@ export const Login = () => {
                         .catch((err)=>{
                         console.log(err)
                         })
+                        .finally(()=> setCurrentUser(true)) //aqui se pasa al curretUser a "true" para simular el login, mientras la respuesta del request post no sea exitosa
                 }}
                 initialValues={{
                     email: '',

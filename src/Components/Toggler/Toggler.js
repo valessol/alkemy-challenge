@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Collapse } from 'react-bootstrap';
 
-const OpenAnimation = ({children}) => {
+const Toggler = ({children, labeltrue, labelfalse}) => {
     const [open, setOpen] = useState(false);
 
     const handleAnimation = () => {
@@ -18,10 +18,10 @@ const OpenAnimation = ({children}) => {
             >
             {
                 open
-                    ? 'Esconder atributos'
-                    : 'Ver atributos'
+                    ? labeltrue
+                    : labelfalse
             }
-                
+             
             </Button>
             <Collapse in={open}>
                 <div>
@@ -32,4 +32,4 @@ const OpenAnimation = ({children}) => {
     )
 }
 
-export default OpenAnimation
+export default Toggler

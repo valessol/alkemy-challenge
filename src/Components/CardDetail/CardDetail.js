@@ -97,13 +97,13 @@ const CardDetail = () => {
                                                     <tr>
                                                         <th><h3 className="title3">Nombre: </h3></th>
 
-                                                        {/* <td className="detailData--info">
+                                                        <td className="detailData--info">
                                                             {
                                                                 hero.biography['full-name']
                                                                     ? hero.biography['full-name']
                                                                     : 'Desconocido'
                                                             }
-                                                        </td> */}
+                                                        </td>
                                                     </tr>
                                                     <tr>
                                                         <th><h3 className="title3">Alias: </h3></th>
